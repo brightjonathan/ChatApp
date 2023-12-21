@@ -1,13 +1,18 @@
-
-import './App.css'
 import React from 'react'
+import './App.css';
+import {Route, Routes } from "react-router-dom";
+import Register from './Pages/Auth/Register';
 
 const App = () => {
   return (
     <div>
-      <h2>App page</h2>
+      <Routes>
+            <Route>
+            <Route path="/register" element={<Register/>} />
+            </Route>
+      </Routes>
     </div>
   )
 }
 
-export default App
+export default App;
