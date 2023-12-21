@@ -1,13 +1,17 @@
 import express from 'express';
 import {
-    signup
+    signup,
+    signin,
+    signout,
+    google
 } from '../controllers/user.controller.js';
 const userRouter = express.Router();
 
 //auth routes
 userRouter.post('/signup', signup);
-// userRouter.post('/signin', signin);
-// userRouter.get('/signout', signout);
-// userRouter.post('/google', google);
+userRouter.post('/signin', signin);
+userRouter.get('/signout', signout);
+userRouter.post('/google', google);
 
 export default userRouter;
+
