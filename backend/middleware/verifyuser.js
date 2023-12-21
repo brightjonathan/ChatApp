@@ -1,5 +1,5 @@
 import asyncHandler from 'express-async-handler';
-//import User from '../model/user.model.js';
+import User from '../model/user.model.js';
 import { errorHandler } from './error.js'
 import jwt from 'jsonwebtoken';
 

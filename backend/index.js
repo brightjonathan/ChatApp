@@ -6,14 +6,13 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 
-//all import from a folder
+//all import file coming from a folder
 import db from "./config/db.js";
 import userRouter from "./routers/user.router.js";
 
 //connection to database
 db();
 dotenv.config();
-
 
 const app = express();
 
@@ -39,8 +38,6 @@ app.listen(port, ()=>{
 app.use('/api/auth', userRouter);
 
 
-
-
 //middleware for handling errors 
 app.use((err, req, res, next)=>{
     const statuscode  = err.statuscode || 500;
@@ -51,3 +48,4 @@ app.use((err, req, res, next)=>{
       message,
     });
 });
+

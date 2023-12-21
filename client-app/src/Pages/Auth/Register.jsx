@@ -26,7 +26,7 @@ const Register = () => {
         
         <Card>
         <div className={styles.form}>
-           <h2>Register</h2>
+           <h2>Register to chatty app</h2>
            
            <form autoComplete='off'>
 
@@ -36,7 +36,7 @@ const Register = () => {
             // onBlur={handleBlur}
             id='fullname' 
             type="text" 
-            placeholder='enter you name' 
+            placeholder='Enter you name, must be unique' 
             required
             // className={errors.fullname && touched.fullname ? 'border-[#3a0303]' : ''}
             />

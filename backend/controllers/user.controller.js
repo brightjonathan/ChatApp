@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import {errorHandler} from '../middleware/error.js'
+import User from '../model/user.model.js';
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
 import dotenv from 'dotenv';
@@ -30,10 +31,10 @@ export const signup = asyncHandler(async (req, res, next)=>{
     });
 
     //generate token
-    const token = jwt.sign({id: createUser._id}, process.env.JWT_SECRET, {expiresIn: "1d"});
+    const token = jwt.sign({id: createUser._id}, process.env.JWT_SECRET);
 
     try {
-        if(createUser) return res.cookie('access_token', token, 
+        if(createUser) return res.cookie('access_token_to_chatty', token, 
         { 
             httpOnly: true, 
             sameSite: "none",
