@@ -8,7 +8,7 @@ import morgan from "morgan";
 
 //all import from a folder
 import db from "./config/db.js";
-
+import userRouter from "./routers/user.router.js";
 
 //connection to database
 db();
@@ -36,7 +36,7 @@ app.listen(port, ()=>{
 
 
 //for all routes end-points
-//app.use('/api/client', clientRouter);
+app.use('/api/auth', userRouter);
 
 
 
