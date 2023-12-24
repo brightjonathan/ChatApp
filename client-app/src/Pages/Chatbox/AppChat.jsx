@@ -3,13 +3,16 @@ import './Chat.css';
 import Chat from "./Chat";
 import { API_URL } from '../../Components/Api';
 import io from "socket.io-client";
+import { useSelector } from 'react-redux';
 
 
 const socket = io.connect(API_URL);
 
 const AppChat = () => {
     
-  const [username, setUsername] = useState("");
+  const {currentUser} = useSelector((state) => state.user);
+   const username = currentUser?.username; 
+  
   const [room, setRoom] = useState("");
   const [showChat, setShowChat] = useState(false);
 
@@ -28,10 +31,8 @@ const AppChat = () => {
           <h3>Join A Chat</h3>
           <input
             type="text"
-            placeholder="John..."
-            onChange={(event) => {
-              setUsername(event.target.value);
-            }}
+            value={username}
+            disabled
           />
           <input
             type="text"

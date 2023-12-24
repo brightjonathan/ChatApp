@@ -50,13 +50,14 @@ const formattedHours = hours % 12 || 12;
   return (
     <div className="chat-window">
       <div className="chat-header">
-        <p>Live Chat</p>
+        <p> Chat Live</p>
       </div>
       <div className="chat-body">
         <ScrollToBottom className="message-container">
-          {messageList.map((messageContent) => {
+          {messageList.map((messageContent, index) => {
             return (
               <div
+               key={index}
                 className="message"
                 id={username === messageContent.author ? "you" : "other"}
               >
@@ -78,6 +79,7 @@ const formattedHours = hours % 12 || 12;
         <input
           type="text"
           value={currentMessage}
+          className='text-4xl'
           placeholder="Hey..."
           onChange={(event) => {
             setCurrentMessage(event.target.value);

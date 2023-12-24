@@ -7,6 +7,8 @@ import Register from './Pages/Auth/Register';
 import Login from './Pages/Auth/Login';
 import Homepage from './Pages/Home/Homepage';
 import AppChat from './Pages/Chatbox/AppChat';
+import Private from './Components/PrivateRoutes/Private';
+
 
 
 const App = () => {
@@ -16,9 +18,11 @@ const App = () => {
       <Routes>
             <Route>
             <Route path="/" element={<Homepage/>} />
-            <Route path="/chat" element={<AppChat />} />
             <Route path="/register" element={<Register/>} />
             <Route path="/login" element={<Login/>} />
+            <Route element={<Private/>}>
+            <Route path="/chat" element={<AppChat />} />
+            </Route>
             </Route>
       </Routes>
     </div>

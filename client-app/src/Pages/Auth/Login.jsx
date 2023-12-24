@@ -114,15 +114,15 @@ const Login = () => {
 
             <button type='submit' className='--btn --btn-primary --btn-block '>Login</button>
 
-            <div className={styles.links}>
+            {/* <div className={styles.links}>
                <Link to='/reset-password' className='text-[blue] underline hover:text-[blue]'> Reset Password</Link>
-            </div>
+            </div> */}
 
-            <p>-- or --</p>
+            {/* <p>-- or --</p> */}
            </form>
            
 
-           <button className='--btn --btn-danger --btn-block '> <FcGoogle size={25} /> Login with Google</button>
+           {/* <button className='--btn --btn-danger --btn-block '> <FcGoogle size={25} /> Login with Google</button> */}
             <span className={styles.register}> 
                 <p>Don't have an account?</p> 
                 <Link to='/register' className='text-[blue] underline hover:text-[blue]'> Register</Link>

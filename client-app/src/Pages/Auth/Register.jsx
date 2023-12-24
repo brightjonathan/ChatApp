@@ -159,9 +159,9 @@ const handleSubmit = async (e) => {
                 <Link to='/login' className='underline text-[blue] hover:text-[blue]'> Login</Link>
             </span>
 
-            <span className='m-5 text-center'> <p> By signing up you accept our <Link to='/terms-and-conditions' className='underline text-[blue] hover:text-[blue]'> terms and conditions </Link> 
+            {/* <span className='m-5 text-center'> <p> By signing up you accept our <Link to='/terms-and-conditions' className='underline text-[blue] hover:text-[blue]'> terms and conditions </Link> 
             <Link to='/privacy-policy' className='underline text-[blue] hover:text-[blue]'> & privacy policy </Link> 
-            </p> </span>
+            </p> </span> */}
         </div>
         </Card>
         <div className={styles.img}>
