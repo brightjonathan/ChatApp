@@ -69,12 +69,12 @@ const userSlice = createSlice({
           updateProfileStart: (state)=>{
               state.loading = true
             },
-            updateProfileSuccess: (state, action)=>{
+         updateProfileSuccess: (state, action)=>{
                 state.currentUser = action.payload,
                 state.loading = true,
                 state.error = null
             },
-            updateProfileFailure: (state, action)=>{
+         updateProfileFailure: (state, action)=>{
                 state.error = action.payload,
                 state.loading = false
             },

@@ -3,12 +3,27 @@ import styles from './auth.module.scss';
 import {AiFillEyeInvisible, AiFillEye} from 'react-icons/ai';
 import Card from '../../Components/Card/Card';
 import RegisterImg from '../../assets/register.gif'
-import { Link } from 'react-router-dom';
-import { useFormik } from 'formik';
-import { basicSchema } from './Scheme/SchemeIndex';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import LoaderSpinner from '../../Components/Loader/LoaderSpinner';
+import { API_URL } from '../../Components/Api';
 
+
+
+const initialState = {
+  username: "",
+  email: "",
+  password: "",
+  comfirmpassword: "",
+};
 
 const Register = () => {
+   
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState(initialState); 
+  const {username, email, password, comfirmpassword} = formData;
+  const [loading, setLoading] = useState(false);
 
     //toggling for password eye
   const [passwordEye, setPasswordEye] = useState(false);
@@ -21,116 +36,131 @@ const Register = () => {
     setConfirmPasswordEye(!confirmPasswordEye)
   }
 
-//handles submit in react
-const onSubmit = async ({username, email, password}, actions)=>{
-      //api will be here
-      try {
-        //console.log({username, email, password});
-      } catch (error) {
-        console.log(error);
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      actions.resetForm();
-}
- 
-
-    //de-structuring the property of useFormik()
-    const {values, handleBlur, isSubmitting, touched, errors, handleChange, handleSubmit} = useFormik({
-      initialValues: {
-         username: '',
-         email: '',
-         password: '',
-         confirmPassword: "",
-      },
-      
-      //validation
-      validationSchema: basicSchema,
-      onSubmit
+  //handles the onchange input fields
+  const handleChange = (e)=>{
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value
     });
+  };
+
+
+ //validating the email
+ const validateEmail = (email) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  );
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!username || !email || !password) {
+    return toast.error(<p className='text-xl'>All fields are required</p>);
+  }
+  if (password.length < 6) {
+    return toast.error(<p className='text-xl'>Passwords must be up to 6 characters</p>);
+  };
+  if (!validateEmail(email)) {
+    return toast.error(<p className='text-xl'>Please enter a valid email</p>);
+  };
+  if (password !== comfirmpassword) {
+    return toast.error(<p className='text-xl'>Passwords do not match</p>);
+  };
+
+  try {
+    setLoading(true);
+    const res = await fetch(`${API_URL}/api/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+    const data = await res.json();
+    //console.log(data);
+    if (data.success === false) {
+      setLoading(false);
+      toast.error(<p className='text-xl'>{data.message}</p>);
+      return;
+    }
+
+    setLoading(false);
+    navigate('/login');
+    toast.success("signup successfully");
+  } catch (error) {
+    setLoading(false);  
+    toast.error(<p className='text-xl'>{error.message}</p>);
+  }
+};
+
+
 
 
   return (
     <>
-    {/* {loadingState && <Loader/>} */}
+    {loading && <LoaderSpinner />}
     <section className={`container pt-10 ${styles.auth}`}>
         
         <Card>
         <div className={styles.form}>
            <h2>Register to chatty app</h2>
            
-           <form autoComplete='off' onSubmit={handleSubmit}>
+           <form autoComplete='on' onSubmit={handleSubmit}>
 
            <input
-            value={values.username}
-            onChange={handleChange}
-            onBlur={handleBlur}
             id='username' 
+            onChange={handleChange}
             type="text" 
-            placeholder='Enter you name, must be unique' 
+            placeholder='Enter your name and it must be unique'
             required
-            className={errors.username && touched.username ? 'border-[red]' : ''}
             />
-            {errors.username && touched.username && <p className='text-[red]'>{errors.username}</p>}
 
             <input
-            value={values.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
             id='email' 
+            onChange={handleChange}
             type="email" 
             placeholder='email' 
             required
-            className={errors.email && touched.email ? 'text-[red]' : ''}
             />
-            {errors.email && touched.email && <p className='text-[red]'>{errors.email}</p>}
 
             <div className='my-2 w-full relative'>
             <input 
-            value={values.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
             id='password'
+            onChange={handleChange}
             type={(passwordEye === false) ? 'password' : 'text'}
             placeholder='password' 
             required
-            className={errors.password && touched.password ? 'input-error' : ''}
             />
             <div className='absolute right-2 top-6'>
             {(passwordEye === false) ? <AiFillEyeInvisible size={20} onClick={handlePasswordEye} className='text-gray-400'/> : <AiFillEye size={20} onClick={handlePasswordEye} className='text-gray-400'/>}
             </div>
             </div>
-            {errors.password && touched.password && <p className='text-[red]'>{errors.password}</p>}
             
             <div className=' my-2 w-full relative'>
             <input 
-            value={values.confirmPassword}
+            id='comfirmpassword'
             onChange={handleChange}
-            onBlur={handleBlur}
-            id='confirmPassword' 
             type={(confirmPasswordEye === false) ? 'password' : 'text'} 
             placeholder='Confirm password' 
             required
-            className={errors.confirmPassword && touched.confirmPassword ? 'input-error' : ''}
             />
             <div className='absolute right-2 top-6'>
             {(confirmPasswordEye === false) ? <AiFillEyeInvisible size={20} onClick={handleConfirmPasswordEye} className='text-gray-400'/> : <AiFillEye size={20} onClick={handleConfirmPasswordEye} className='text-gray-400'/>}
             </div>
             </div>
-            {errors.confirmPassword && touched.confirmPassword && <p className='text-[red]'>{errors.confirmPassword}</p>}
              
             <button 
             type='submit' 
-            disabled={isSubmitting}  
             className='--btn --btn-primary --btn-block'>Register</button>
            </form>
             <span className={styles.register}>
                 <p>Already have an account?</p> 
-                <Link to='/login'> Login</Link>
+                <Link to='/login' className='underline text-[blue] hover:text-[blue]'> Login</Link>
             </span>
 
-            <span className='m-5 text-center'> <p> By signing up you accept our <Link to='/terms-and-conditions' className='underline'> terms and conditions </Link> 
-            <Link to='/privacy-policy' className='underline'> & privacy policy </Link> 
+            <span className='m-5 text-center'> <p> By signing up you accept our <Link to='/terms-and-conditions' className='underline text-[blue] hover:text-[blue]'> terms and conditions </Link> 
+            <Link to='/privacy-policy' className='underline text-[blue] hover:text-[blue]'> & privacy policy </Link> 
             </p> </span>
         </div>
         </Card>
