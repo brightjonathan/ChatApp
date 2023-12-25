@@ -70,7 +70,7 @@ const handleSubmit = async (e) => {
 
   try {
     setLoading(true);
-    const res = await fetch(`${API_URL}/api/auth/signup`, {
+    const res = await fetch('https://chattyapp-iwdo.onrender.com/api/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

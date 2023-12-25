@@ -61,7 +61,7 @@ const formattedHours = hours % 12 || 12;
     const logout = async() => {
       try {
        dispatch(signoutUserStart());
-       const res = await fetch(`${API_URL}/api/auth/signout`);
+       const res = await fetch('https://chattyapp-iwdo.onrender.com/api/auth/signout');
        const data = await res.json();
        if (data.success === false) {
          dispatch(signoutUserFailure(data.message));

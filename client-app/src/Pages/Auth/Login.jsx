@@ -49,7 +49,7 @@ const Login = () => {
       try {
         setLoading(true);
         dispatch(signInStart());
-        const res = await fetch(`${API_URL}/api/auth/signin`, {
+        const res = await fetch('https://chattyapp-iwdo.onrender.com/api/auth/signin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
