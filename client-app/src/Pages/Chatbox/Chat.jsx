@@ -1,10 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import Notiflix from "notiflix";
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import ScrollToBottom from "react-scroll-to-bottom";
+import { API_URL } from '../../Components/Api';
+import { signoutUserFailure, signoutUserStart, signoutUserSuccess } from '../../Redux/User/Auth.Slice';
+import { toast } from 'react-toastify';
 //import Logo from '../../Components/Logo/Logo'
 
 
 
 const Chat = ({Socket, username, room}) => {
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
@@ -47,8 +57,60 @@ const formattedHours = hours % 12 || 12;
   }, [Socket]);
 
 
+    //logout func...
+    const logout = async() => {
+      try {
+       dispatch(signoutUserStart());
+       const res = await fetch(`${API_URL}/api/auth/signout`);
+       const data = await res.json();
+       if (data.success === false) {
+         dispatch(signoutUserFailure(data.message));
+         return;
+       }
+         dispatch(signoutUserSuccess(data))
+         toast.success("logout successfully");
+         navigate('/login')
+      } catch (error) {
+       dispatch(signoutUserFailure(data));
+      }
+     };
+   
+     //
+     const confirmLoggedout = () => {
+       Notiflix.Confirm.show(
+         "Logout Account!!!",
+         "You are about to logout this account",
+         "Logout",
+         "Cancel",
+         function okCb() {
+           logout();
+         },
+         function cancelCb() {
+           console.log("Logout Canceled");
+         },
+         {
+           width: "320px",
+           borderRadius: "3px",
+           titleColor: "blue",
+           okButtonBackground: "green",
+           cssAnimationStyle: "zoom",
+         }
+       );
+     };
+
+
   return (
+    <>
+      <div className='text-center'>
+       <button
+       onClick={confirmLoggedout} 
+        className='bg-[#0F172A] text-white text-2xl py-2 px-6 rounded md:ml-8 duration-500 mt-3 '> 
+        Logout</button>
+        </div>
+
+
     <div className="chat-window">
+
       <div className="chat-header">
         <p> Chat Live</p>
       </div>
@@ -87,10 +149,11 @@ const formattedHours = hours % 12 || 12;
           onKeyPress={(event) => {
             event.key === "Enter" && sendMessage();
           }}
-        />
+          />
         <button onClick={sendMessage}>&#9658;</button>
       </div>
     </div>
+  </>
   )
 }
 
