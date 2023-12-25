@@ -35,7 +35,7 @@ const Homepage = () => {
     <section className="container hero">
       <div className="hero-text">
       <h2> Instant Communication for Seamless Connections</h2> 
-      <p className='font-normal'>
+      <p className='text-3xl'>
        Chatty app is an instant messaging platform that enables users to exchange text messages seamlessly.
        Step into the world of Chatty, where seamless communication is at your fingertips! This innovative messaging app re-defines the way users connect by offering instant text messaging. Whether you're sharing quick updates or engaging in meaningful conversations, Chatty ensures a smooth and efficient exchange of thoughts and ideas. Join the conversation and experience the convenience of instant communication with the Chatty app!
         </p><div className="hero-buttons">
