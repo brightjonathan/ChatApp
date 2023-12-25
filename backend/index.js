@@ -6,7 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import {Server} from 'socket.io';
 import http from 'http';
-
+import path from 'path';
 
 //all import file coming from a folder
 import db from "./config/db.js";
@@ -15,6 +15,8 @@ import userRouter from "./routers/user.router.js";
 //connection to database
 db();
 dotenv.config();
+
+const __dirname = path.resolve();
 
 const app = express();
 const server = http.createServer(app);
@@ -56,6 +58,14 @@ io.on("connection", (socket) => {
     console.log("User Disconnected:", socket.id);
   });
 });
+
+
+//it has to be after the api routes
+app.use(express.static(path.join(__dirname, '/client-app/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client-app', 'dist', 'index.html'));
+})
 
 
 //local host connection
